@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.criminalintent.databinding.ListItemCrimeBinding
 
 class CrimeHolder (
-    val binding: ListItemCrimeBinding
+    private val binding: ListItemCrimeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-
+    fun bind(crime: Crime) {
+        binding.crimeTitle.text = crime.title
+        binding.crimeDate.text = crime.date.toString()
+    }
 }
 
 class CrimeListAdapter(
@@ -23,10 +26,7 @@ class CrimeListAdapter(
 
     override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
         val crime = crimes[position]
-        holder.apply {
-            binding.crimeTitle.text = crime.title
-            binding.crimeDate.text = crime.date.toString()
-        }
+        holder.bind(crime)
     }
 
     override fun getItemCount() = crimes.size
