@@ -1,18 +1,21 @@
 package com.bignerdranch.android.criminalintent
 
+import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.criminalintent.databinding.ListItemCrimeBinding
+import java.util.Date
+import java.util.Locale
 
 class CrimeHolder (
     private val binding: ListItemCrimeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(crime: Crime) {
         binding.crimeTitle.text = crime.title
-        binding.crimeDate.text = crime.date.toString()
+        binding.crimeDate.text = formatDateToHumanString(crime.date)
 
         binding.root.setOnClickListener {
             Toast.makeText(
@@ -27,6 +30,12 @@ class CrimeHolder (
         } else {
             View.GONE
         }
+    }
+
+    private fun formatDateToHumanString(date: Date): String {
+        // 4 Es -> Full Weekday, 4 Ms -> Full Month, 2 ds -> Day of Month #, 4 ys -> Year
+        val humanDatePattern = SimpleDateFormat("EEEE, MMMM, dd, yyyy", Locale.US)
+        return humanDatePattern.format(date)
     }
 }
 
