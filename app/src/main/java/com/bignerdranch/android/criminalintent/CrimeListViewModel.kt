@@ -22,7 +22,6 @@ class CrimeListViewModel: ViewModel() {
             Log.d(TAG, "Loading crimes finished")
             }
         }
-    }
 
     suspend fun loadCrimes() : List<Crime> {
         val result = mutableListOf<Crime>()
@@ -36,6 +35,8 @@ class CrimeListViewModel: ViewModel() {
             )
 
             result += crime
-    }
+        }
         return result
+    }
 }
+
