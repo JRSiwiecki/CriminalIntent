@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.android.criminalintent.CrimeListAdapter.Companion.formatDateToHumanString
 import com.bignerdranch.android.criminalintent.databinding.ListItemCrimeBinding
 import java.util.Date
 import java.util.Locale
@@ -27,12 +28,6 @@ class CrimeHolder (
             View.GONE
         }
     }
-
-    private fun formatDateToHumanString(date: Date): String {
-        // 4 Es -> Full Weekday, 4 Ms -> Full Month, 2 ds -> Day of Month #, 4 ys -> Year
-        val humanDatePattern = SimpleDateFormat("EEEE, MMMM, dd, yyyy", Locale.US)
-        return humanDatePattern.format(date)
-    }
 }
 
 class CrimeListAdapter(
@@ -53,4 +48,11 @@ class CrimeListAdapter(
 
     override fun getItemCount() = crimes.size
 
+    companion object {
+        fun formatDateToHumanString(date: Date): String {
+            // 4 Es -> Full Weekday, 4 Ms -> Full Month, 2 ds -> Day of Month #, 4 ys -> Year
+            val humanDatePattern = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.US)
+            return humanDatePattern.format(date)
+        }
+    }
 }
