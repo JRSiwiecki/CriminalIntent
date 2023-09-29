@@ -45,6 +45,9 @@ class CrimeDetailFragment: Fragment() {
 
         binding.apply {
             crimeTitle.doOnTextChanged { text, _, _, _ ->
+                crimeDetailViewModel.updateCrime { oldCrime ->
+                    oldCrime.copy(title = text.toString())
+                }
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
@@ -60,6 +63,9 @@ class CrimeDetailFragment: Fragment() {
             }
 
             crimeSolved.setOnCheckedChangeListener { _, isChecked ->
+                crimeDetailViewModel.updateCrime { oldCrime ->
+                    oldCrime.copy(isSolved = isChecked)
+                }
             }
         }
     }
