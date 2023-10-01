@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +41,7 @@ class CrimeDetailFragment: Fragment() {
     private val selectSuspect = registerForActivityResult(
         ActivityResultContracts.PickContact()
     ) { uri: Uri? ->
-        // TODO
+        uri?.let { parseContactSelection(it) }
     }
 
     override fun onCreateView(
@@ -151,5 +152,21 @@ class CrimeDetailFragment: Fragment() {
         return getString(
             R.string.crime_report, crime.title, dateString, solvedString, suspectText
         )
+    }
+
+    private fun parseContactSelection(contactUri: Uri) {
+        val queryFields = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
+
+        val queryCursor = requireActivity().contentResolver
+            .query(contactUri, queryFields, null, null, null)
+
+        queryCursor?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val suspect = cursor.getString(0)
+                crimeDetailViewModel.updateCrime { oldCrime ->
+                    oldCrime.copy(suspect = suspect)
+                }
+            }
+        }
     }
 }
