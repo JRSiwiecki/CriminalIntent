@@ -2,7 +2,7 @@ package com.bignerdranch.android.criminalintent
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.util.Log
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +16,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bignerdranch.android.criminalintent.databinding.FragmentCrimeDetailBinding
 import kotlinx.coroutines.launch
-import java.util.UUID
 import java.util.Date
+
+private const val DATE_FORMAT = "EEE, MMM, dd"
 
 class CrimeDetailFragment: Fragment() {
 
@@ -96,5 +97,24 @@ class CrimeDetailFragment: Fragment() {
             }
             crimeSolved.isChecked = crime.isSolved
         }
+    }
+
+    private fun getCrimeReport(crime: Crime): String {
+        val solvedString = if (crime.isSolved) {
+            getString(R.string.crime_report_solved)
+        } else {
+            getString(R.string.crime_report_unsolved)
+        }
+
+        val dateString = DateFormat.format(DATE_FORMAT, crime.date).toString()
+        val suspectText = if (crime.suspect.isBlank()) {
+            getString(R.string.crime_report_no_suspect)
+        } else {
+            getString(R.string.crime_report_suspect, crime.suspect)
+        }
+
+        return getString(
+            R.string.crime_report, crime.title, dateString, solvedString, suspectText
+        )
     }
 }
