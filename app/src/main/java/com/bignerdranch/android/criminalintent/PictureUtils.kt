@@ -5,28 +5,31 @@ import android.graphics.BitmapFactory
 import kotlin.math.roundToInt
 
 class PictureUtils {
-    fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitmap {
-        // Read in the dimensions of image on disk
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeFile(path, options)
 
-        val srcWidth = options.outWidth.toFloat()
-        val srcHeight = options.outHeight.toFloat()
+    companion object {
+        fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitmap {
+            // Read in the dimensions of image on disk
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeFile(path, options)
 
-        // Figure out scale dimensions
-        val sampleSize = if (srcHeight <= destHeight && srcWidth <= destWidth) {
-            1
-        } else {
-            val heightScale = srcHeight / destHeight
-            val widthScale = srcWidth / destWidth
+            val srcWidth = options.outWidth.toFloat()
+            val srcHeight = options.outHeight.toFloat()
 
-            minOf(heightScale, widthScale).roundToInt()
+            // Figure out scale dimensions
+            val sampleSize = if (srcHeight <= destHeight && srcWidth <= destWidth) {
+                1
+            } else {
+                val heightScale = srcHeight / destHeight
+                val widthScale = srcWidth / destWidth
+
+                minOf(heightScale, widthScale).roundToInt()
+            }
+
+            // Read in and create final bitmap
+            return BitmapFactory.decodeFile(path, BitmapFactory.Options().apply {
+                inSampleSize = sampleSize
+            })
         }
-
-        // Read in and create final bitmap
-        return BitmapFactory.decodeFile(path, BitmapFactory.Options().apply {
-            inSampleSize = sampleSize
-        })
     }
 }
