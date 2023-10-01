@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import kotlin.math.roundToInt
 
